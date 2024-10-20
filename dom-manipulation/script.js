@@ -34,7 +34,7 @@ function setupPeriodicSync() {
   }
   
 
-function syncWithServer(serverQuotes) {
+function syncQuotes(serverQuotes) {
     const mergedQuotes = [...Quotes, ...serverQuotes];
   
     const uniqueQuotes = Array.from(new Set(mergedQuotes.map(q => q.text)))
