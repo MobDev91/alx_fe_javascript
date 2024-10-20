@@ -164,6 +164,7 @@ function exportToJson() {
     document.getElementById('addQuoteBtn').addEventListener('click', createAddQuoteForm);
     document.getElementById('importFile').addEventListener("change", importFromJsonFile);
     document.getElementById('exportJson').addEventListener('click', exportToJson);
+    showNotification("Data synced with the server. Server data takes precedence.");
 
     window.onload = function() {
         setupPeriodicSync();
