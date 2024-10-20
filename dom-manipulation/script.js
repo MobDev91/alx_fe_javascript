@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
         quoteDisplay.innerHTML = `<p>"${randomQuote.text}" - Category: ${randomQuote.category}</p>`;
         }
 
-    function addQuote(){
+    function createAddQuoteForm(){
     let newQuoteCategory = document.getElementById("newQuoteCategory").value;
     let newQuoteText = document.getElementById("newQuoteText").value;
     if( newQuoteCategory !="" && newQuoteText !=""){
@@ -38,6 +38,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById('showQuoteBtn').addEventListener("click", showRandomQuote);
 
-     document.getElementById('addQuoteBtn').addEventListener('click', addQuote);
+     document.getElementById('addQuoteBtn').addEventListener('click', createAddQuoteForm);
 
 });
