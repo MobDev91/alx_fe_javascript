@@ -42,7 +42,7 @@ function syncQuotes(serverQuotes) {
     Quotes = uniqueQuotes;
     saveQuotes(); 
   
-    alert("Quotes have been synced with the server!");
+    alert("Quotes synced with the server!");
     populateCategories(); 
   }
 
@@ -164,7 +164,6 @@ function exportToJson() {
     document.getElementById('addQuoteBtn').addEventListener('click', createAddQuoteForm);
     document.getElementById('importFile').addEventListener("change", importFromJsonFile);
     document.getElementById('exportJson').addEventListener('click', exportToJson);
-    showNotification("Quotes synced with the server");
 
     window.onload = function() {
         setupPeriodicSync();
