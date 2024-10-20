@@ -13,11 +13,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 {text : "Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.", category : "Education"},
                 {text : "The source of wisdom is whatever is going to happen to us today.", category : "Wisdom"}];
 
-    function showRandomQuote(){
-            let i = Math.floor(Math.random() * (Quotes.length));
-            quoteCategory.textContent = Quotes[i].category;
-            quoteParagraph.textContent = Quotes[i].text;
-    }
+    function showRandomQuote() {
+        const quoteDisplay = document.getElementById('quoteDisplay');
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+        quoteDisplay.innerHTML = `<p>"${randomQuote.text}" - Category: ${randomQuote.category}</p>`;
+        }
 
     function addQuote(){
     let newQuoteCategory = document.getElementById("newQuoteCategory").value;
