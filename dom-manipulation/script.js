@@ -1,5 +1,58 @@
 document.addEventListener("DOMContentLoaded", function() {
+    
+async function fetchQuotesFromServer() {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      const serverQuotes = await response.json();
+            const fetchedQuotes = serverQuotes.map(post => ({
+        text: post.title,
+        category: 'Server'
+      }));
+      
+      console.log("Fetched quotes from server: ", fetchedQuotes);
+      return fetchedQuotes;
+    } catch (error) {
+      console.error("Error fetching quotes from server:", error);
+    }
+  }
 
+
+function setupPeriodicSync() {
+    setInterval(async () => {
+      const serverQuotes = await fetchQuotesFromServer();
+      
+      if (serverQuotes) {
+        syncWithServer(serverQuotes);
+      }
+    }, 60000);
+  }
+  
+
+function syncWithServer(serverQuotes) {
+    const mergedQuotes = [...Quotes, ...serverQuotes];
+  
+    const uniqueQuotes = Array.from(new Set(mergedQuotes.map(q => q.text)))
+      .map(text => mergedQuotes.find(q => q.text === text));
+    Quotes = uniqueQuotes;
+    saveQuotes(); 
+  
+    alert("Quotes have been synced with the server!");
+    populateCategories(); 
+  }
+
+
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+      setTimeout(() => {
+      document.body.removeChild(notification);
+    }, 5000);
+  }
+  
+  
 
     let newDiv = document.createElement("div");
     let quoteCategory = document.createElement("h3");
@@ -106,6 +159,9 @@ function exportToJson() {
     document.getElementById('importFile').addEventListener("change", importFromJsonFile);
     document.getElementById('exportJson').addEventListener('click', exportToJson);
 
+    window.onload = function() {
+        setupPeriodicSync();
+      };
 
 
 });
