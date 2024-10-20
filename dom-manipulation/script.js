@@ -9,14 +9,19 @@ document.addEventListener("DOMContentLoaded", function() {
     newDiv.appendChild(quoteCategory);
     newDiv.appendChild(quoteParagraph);
     document.body.insertBefore(newDiv, showBtn);
-    let Quotes = [{text : "The measure of success is not how much time you spend doing what you love, it's how little time you spend doing what you hate.", category :"Success"},
-                {text : "Having knowledge but lacking the power to express it clearly is no better than never having any ideas at all.", category : "Education"},
-                {text : "The source of wisdom is whatever is going to happen to us today.", category : "Wisdom"}];
+    let Quotes = JSON.parse(localStorage.getItem('localQuotes')) || [
+        { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
+        { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+        { text: "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.", category: "Self" }
+      ];
 
+      function saveQuotes() {
+        localStorage.setItem('localQuotes', JSON.stringify(Quotes));
+      }
     function showRandomQuote() {
         const quoteDisplay = document.getElementById('quoteDisplay');
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        const randomQuote = quotes[randomIndex];
+        const randomIndex = Math.floor(Math.random() * Quotes.length);
+        const randomQuote = Quotes[randomIndex];
         quoteDisplay.innerHTML = `<p>"${randomQuote.text}" - Category: ${randomQuote.category}</p>`;
         }
 
@@ -25,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let newQuoteText = document.getElementById("newQuoteText").value;
     if( newQuoteCategory !="" && newQuoteText !=""){
     Quotes.push({text : newQuoteText, category : newQuoteCategory });
+    saveQuotes();
     document.getElementById("newQuoteCategory").value = "";
     document.getElementById("newQuoteText").value = "";
     alert("Quote added successfuly");
@@ -35,9 +41,37 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     }
 
+function exportToJson() {
+    const jsonStr = JSON.stringify(Quotes, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+  
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = 'quotes.json';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+  
+
+
+    function importFromJsonFile(event) {
+        const fileReader = new FileReader();
+        fileReader.onload = function(event) {
+          const importedQuotes = JSON.parse(event.target.result);
+          Quotes.push(...importedQuotes);
+          saveQuotes();
+          alert('Quotes imported successfully!');
+        };
+        fileReader.readAsText(event.target.files[0]);
+      }
 
     document.getElementById('showQuoteBtn').addEventListener("click", showRandomQuote);
+    document.getElementById('addQuoteBtn').addEventListener('click', createAddQuoteForm);
+    document.getElementById('importFile').addEventListener("change", importFromJsonFile);
+    document.getElementById('exportJson').addEventListener('click', exportToJson);
 
-     document.getElementById('addQuoteBtn').addEventListener('click', createAddQuoteForm);
+
 
 });
