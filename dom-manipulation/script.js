@@ -42,8 +42,8 @@ function syncQuotes(serverQuotes) {
     Quotes = uniqueQuotes;
     saveQuotes(); 
   
-    alert("Quotes synced with the server!");
-    populateCategories(); 
+    showNotification("Quotes synced with server!");
+    populateCategories();
   }
 
 
